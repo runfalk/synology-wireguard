@@ -1,0 +1,20 @@
+#!/bin/sh
+case $1 in
+	start)
+		/sbin/insmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
+		exit 0
+	;;
+	stop)
+		/sbin/rmmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
+		exit 0
+	;;
+	status)
+		/sbin/lsmod | grep wireguard && exit 0 || exit 3
+	;;
+	killall)
+        ;;
+	log)
+		exit 0
+	;;
+esac
+

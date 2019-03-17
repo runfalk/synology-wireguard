@@ -1,0 +1,8 @@
+#!/bin/bash
+case ${MakeClean} in
+	[Yy][Ee][Ss])
+		make clean
+		;;
+esac
+
+make ${MAKE_FLAGS} KSRC=$KSRC CROSS_COMPILE=$CROSS_COMPILE ARCH=$ARCH
