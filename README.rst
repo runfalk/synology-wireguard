@@ -49,14 +49,23 @@ you can figure out how the next command should look like. In my case it's:
 .. code-block:: bash
 
     pkgscripts-ng/EnvDeploy -p armada38x -v 6.2
+    cp /etc/ssl/certs/ca-certificates.crt /build_env/*/etc/ssl/certs/
 
-Now we can build an SPK package:
+The second command is very important, or the package build will fail on SSL
+errors. Now we can build an SPK package:
 
 .. code-block:: bash
 
     pkgscripts-ng/PkgCreate.py -p armada38x -v 6.2 -S --build-opt=-J --print-log -c WireGuard
 
-There should now be an SPK in ``/result_spk``
+There should now be an SPK in ``/result_spk``. You can now exit the docker
+container and extract the SPKs:
+
+.. code-block:: bash
+
+    sudo docker cp synobuild:/result_spk/WireGuard-0.0.20190227/WireGuard-armada38x-0.0.20190227.spk .
+    sudo docker cp synobuild:/result_spk/WireGuard-0.0.20190227/WireGuard-armada38x-0.0.20190227_debug.spk .
+
 
 Credits
 -------
