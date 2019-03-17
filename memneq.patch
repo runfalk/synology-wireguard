@@ -1,0 +1,13 @@
+--- Kbuild.include	2019-03-17 16:02:33.388208274 +0000
++++ Kbuild.include	2019-03-17 16:02:45.951895692 +0000
+@@ -42,10 +42,8 @@
+ wireguard-y += compat/udp_tunnel/udp_tunnel.o
+ endif
+ 
+-ifeq ($(shell grep -s -F "int crypto_memneq" "$(srctree)/include/crypto/algapi.h"),)
+ ccflags-y += -include $(kbuild-dir)/compat/memneq/include.h
+ wireguard-y += compat/memneq/memneq.o
+-endif
+ 
+ ifeq ($(wildcard $(srctree)/arch/arm/include/asm/neon.h)$(CONFIG_ARM),y)
+ ccflags-y += -I$(src)/compat/neon-arm/include

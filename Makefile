@@ -38,8 +38,7 @@ $(WIREGUARD_TAR):
 # use memneq implementation as it doesn't appear to be included on the D218j.
 $(WIREGUARD_DIR)/src/Makefile: $(WIREGUARD_TAR)
 	tar -xf $(WIREGUARD_TAR)
-	echo 'ccflags-y += -include $(kbuild-dir)/compat/memneq/include.h' >> $(WIREGUARD_DIR)/src/compat/Kbuild.include
-	echo 'wireguard-y += compat/memneq/memneq.o' >> $(WIREGUARD_DIR)/src/compat/Kbuild.include
+	patch $(WIREGUARD_DIR)/src/compat/Kbuild.include $(ROOT_DIR)/memneq.patch
 
 # Build the wg command line tool
 $(WG_TARGET): $(LIBMNL_DIR)/src/.libs/libmnl.a $(WIREGUARD_DIR)/src/Makefile
