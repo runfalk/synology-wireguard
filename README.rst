@@ -6,8 +6,8 @@ WireGuard kernel module and the ``wg``/``wg-quick`` commands.
 
 Disclaimer
 ----------
-You use everything here at your own risk. I am responsible if this breaks your
-NAS.
+You use everything here at your own risk. I am not responsible if this breaks
+your NAS.
 
 
 Compatibility list
