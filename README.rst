@@ -1,6 +1,7 @@
 WireGuard support for Synology NAS
 ==================================
-This package adds WireGuard support for Synology NAS drives.
+This package adds WireGuard support for Synology NAS drives. It provides the
+WireGuard kernel module and the ``wg``/``wg-quick`` commands.
 
 
 Disclaimer
@@ -18,6 +19,27 @@ Model Platform  DSM Version Is working?
 ----- --------- ----------- -----------
 D218j armada38x 6.2         Yes
 ===== ========= =========== ===========
+
+
+Installation
+------------
+Check the `releases <https://github.com/runfalk/synology-wireguard/releases>`_
+page for SPKs for your platform. If there is no SPK you have to compile it
+yourself using the instructions below.
+
+1. In the Synology DSM web admin UI, open the Package Center and press the
+   *Settings* button.
+2. Set the trust level to *Any publisher* and press *OK* to confirm.
+3. Press the *Manual install* button and provide the SPK file. Follow the
+   instructions until done.
+
+Now you just need to figure out how to configure WireGuard. There are lots of
+good guides on how to do that.
+
+To put my WireGuard configuration on the NAS I SSHed into my NAS and created
+a ``wg-quick`` configuration in ``/etc/wireguard/wg0.conf``.  Then I opened
+the *Control panel*, opened the *Task scheduler* and created *Triggered task*
+that runs ``wg-quick up wg0`` on startup.
 
 
 Compiling
