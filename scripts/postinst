@@ -1,0 +1,3 @@
+#!/bin/bash
+ln -s $SYNOPKG_PKGDEST/wireguard/wg /usr/local/bin/
+ln -s $SYNOPKG_PKGDEST/wireguard/wg-quick /usr/local/bin/

@@ -1,0 +1,3 @@
+#!/bin/bash
+rm /usr/local/bin/wg
+rm /usr/local/bin/wg-quick
