@@ -36,10 +36,10 @@ yourself using the instructions below.
 Now you just need to figure out how to configure WireGuard. There are lots of
 good guides on how to do that.
 
-To put my WireGuard configuration on the NAS I SSHed into my NAS and created
-a ``wg-quick`` configuration in ``/etc/wireguard/wg0.conf``.  Then I opened
-the *Control panel*, opened the *Task scheduler* and created *Triggered task*
-that runs ``wg-quick up wg0`` on startup.
+To put my WireGuard configuration on the NAS, I used SSH and created a
+``wg-quick`` configuration in ``/etc/wireguard/wg0.conf``.  Then I opened the
+*Control panel*, opened the *Task scheduler* and created *Triggered task* that
+runs ``wg-quick up wg0`` on startup.
 
 
 Compiling
