@@ -12,6 +12,7 @@ WG_QUICK_TARGET := $(WIREGUARD_DIR)/wg-quick
 WG_MODULE_TARGET := $(WIREGUARD_DIR)/src/wireguard.ko
 
 GCC := $(CROSS_COMPILE)gcc
+TARGET_TRIPLE := $(shell echo $(CROSS_COMPILE)|cut -f4 -d/ -)
 
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -24,7 +25,7 @@ $(LIBMNL_TAR):
 # Prepare libmnl for building
 $(LIBMNL_DIR)/Makefile: $(LIBMNL_TAR)
 	tar -xf $(LIBMNL_TAR)
-	(cd $(LIBMNL_DIR) && ./configure --host=x86_64-unknown-linux-gnu --enable-static --target=arm-unknown-linux-gnueabi CC=$(GCC))
+	(cd $(LIBMNL_DIR) && ./configure --host=$(shell gcc -dumpmachine) --enable-static --target=$(TARGET_TRIPLE) CC=$(GCC))
 
 # Compile libmnl static lib
 $(LIBMNL_DIR)/src/.libs/libmnl.a: $(LIBMNL_DIR)/Makefile
@@ -50,7 +51,7 @@ $(WG_QUICK_TARGET): $(WIREGUARD_DIR)/src/Makefile
 
 # Build wireguard.ko kernel module
 $(WG_MODULE_TARGET):
-	make -C $(WIREGUARD_DIR)/src module ARCH=arm KERNELDIR=$(KSRC)
+	make -C $(WIREGUARD_DIR)/src module ARCH=$(ARCH) KERNELDIR=$(KSRC)
 
 install: all
 	mkdir -p $(DESTDIR)/wireguard/
