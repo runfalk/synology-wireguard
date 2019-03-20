@@ -18,12 +18,12 @@ Compatibility list
 ------------------
 The following drives have been tested:
 
-===== ========= =========== ===========================
-Model Platform  DSM Version Is working?
------ --------- ----------- ---------------------------
-D213j armada370 *N/A*       No (Kernel version too old)
-D218j armada38x 6.2         Yes
-===== ========= =========== ===========================
+====== ========= =========== ===========================
+Model  Platform  DSM Version Is working?
+------ --------- ----------- ---------------------------
+DS213j armada370 *N/A*       No (Kernel version too old)
+DS218j armada38x 6.2         Yes
+====== ========= =========== ===========================
 
 The minimun required kernel version is 3.10. If you have a kernel version lower
 than that, WireGuard will not work. You can check your kernel version by
