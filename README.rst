@@ -7,18 +7,27 @@ WireGuard kernel module and the ``wg``/``wg-quick`` commands.
 Disclaimer
 ----------
 You use everything here at your own risk. I am not responsible if this breaks
-your NAS.
+your NAS. Realistically it should not result in data loss, but it could render
+your NAS unaccessible if something goes wrong.
+
+If you are not comfortable with removing your drives from the NAS and manually
+recover the data, this might not be for you.
 
 
 Compatibility list
 ------------------
 The following drives have been tested:
 
-===== ========= =========== ===========
+===== ========= =========== ===========================
 Model Platform  DSM Version Is working?
------ --------- ----------- -----------
+----- --------- ----------- ---------------------------
+D213j armada370 *N/A*       No (Kernel version too old)
 D218j armada38x 6.2         Yes
-===== ========= =========== ===========
+===== ========= =========== ===========================
+
+The minimun required kernel version is 3.10. If you have a kernel version lower
+than that, WireGuard will not work. You can check your kernel version by
+logging in through SSH and running the ``uname -a`` command.
 
 
 Installation
