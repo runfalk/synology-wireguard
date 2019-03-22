@@ -1,7 +1,7 @@
 build_task:
   container:
     dockerfile: Dockerfile
-    docker_arguments:
-      env: PACKAGE_ARCH=armada38x
-      env: DSM_VER=6.2
+  env:
+    PACKAGE_ARCH: armada38x
+    DSM_VER: 6.2
   build_script: /source/WireGuard/build.sh
