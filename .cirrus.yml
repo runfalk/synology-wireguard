@@ -1,9 +1,12 @@
 build_task:
   container:
-    dockerfile: Dockerfile
-    docker_arguments:
-      privileged: true
+    image: ubuntu:18.04
   env:
+    IS_IN_CONTAINER: 1
     PACKAGE_ARCH: armada38x
     DSM_VER: 6.2
+  apt_update_script: apt-get update
+  install_prequisites_script: apt-get -qy install git python3 wget ca-certificates
+  create_source_dir_script: mkdir -p /source/WireGuard
+  populate_source_dir_script: cp -r . /source/WireGuard/
   build_script: /source/WireGuard/build.sh
