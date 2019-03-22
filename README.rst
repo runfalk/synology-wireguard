@@ -16,7 +16,9 @@ recover the data, this might not be for you.
 
 Compatibility list
 ------------------
-The following drives have been tested:
+All models marked *Is working* have been confirmed by users to work. If your
+model has the same platform as one of the working ones, chances are it will
+work for you too.
 
 ========= ========== =========== ===========================
 Model     Platform   DSM Version Is working?
@@ -28,9 +30,10 @@ DS213j    armada370  *N/A*       No (Kernel version too old)
 DS214play armada370  *N/A*       No (Kernel version too old)
 DS214se   armada370  *N/A*       No (Kernel version too old)
 DS216se   armada370  *N/A*       No (Kernel version too old)
-DS218j    armada38x  6.2         Yes
 DS218+    apollolake 6.2         Yes
+DS218j    armada38x  6.2         Yes
 DS414slim armada370  *N/A*       No (Kernel version too old)
+DS918+    apollolake 6.2         Yes
 RS214     armada370  *N/A*       No (Kernel version too old)
 ========= ========== =========== ===========================
 
