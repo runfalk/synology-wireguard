@@ -40,6 +40,16 @@ fi
 # Disable quit if errors to allow printing of logfiles
 set +e
 
+# By default we patch WireGuard to always use include its own memneq
+# implemenation. This is required on most NASes, but some of them come with
+# built in memneq support. Unless HAS_MEMNEQ is defined we set it for models
+# that support it here.
+if [ -z ${HAS_MEMNEQ+x} ]; then
+    if [ "$PACKAGE_ARCH" == "apollolake" ]; then
+        export HAS_MEMNEQ=1
+    fi
+fi
+
 # Build packages
 #   -p              package arch
 #   -v              DSM version

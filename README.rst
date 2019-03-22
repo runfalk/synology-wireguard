@@ -18,20 +18,21 @@ Compatibility list
 ------------------
 The following drives have been tested:
 
-========= ========= =========== ===========================
-Model     Platform  DSM Version Is working?
---------- --------- ----------- ---------------------------
-DS114     armada370 *N/A*       No (Kernel version too old)
-DS115j    armada370 *N/A*       No (Kernel version too old)
-DS213j    armada370 *N/A*       No (Kernel version too old)
-DS213j    armada370 *N/A*       No (Kernel version too old)
-DS214play armada370 *N/A*       No (Kernel version too old)
-DS214se   armada370 *N/A*       No (Kernel version too old)
-DS216se   armada370 *N/A*       No (Kernel version too old)
-DS218j    armada38x 6.2         Yes
-DS414slim armada370 *N/A*       No (Kernel version too old)
-RS214     armada370 *N/A*       No (Kernel version too old)
-========= ========= =========== ===========================
+========= ========== =========== ===========================
+Model     Platform   DSM Version Is working?
+--------- ---------- ----------- ---------------------------
+DS114     armada370  *N/A*       No (Kernel version too old)
+DS115j    armada370  *N/A*       No (Kernel version too old)
+DS213j    armada370  *N/A*       No (Kernel version too old)
+DS213j    armada370  *N/A*       No (Kernel version too old)
+DS214play armada370  *N/A*       No (Kernel version too old)
+DS214se   armada370  *N/A*       No (Kernel version too old)
+DS216se   armada370  *N/A*       No (Kernel version too old)
+DS218j    armada38x  6.2         Yes
+DS218+    apollolake 6.2         Yes
+DS414slim armada370  *N/A*       No (Kernel version too old)
+RS214     armada370  *N/A*       No (Kernel version too old)
+========= ========== =========== ===========================
 
 The minimum required kernel version is 3.10. If you have a kernel version lower
 than that, WireGuard will not work. You can check your kernel version by

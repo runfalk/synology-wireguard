@@ -1,5 +1,6 @@
 WIREGUARD_VERSION ?= 0.0.20190227
 LIBMNL_VERSION ?= 1.0.4
+HAS_MEMNEQ ?= 0
 
 LIBMNL_TAR := libmnl-$(LIBMNL_VERSION).tar.bz2
 LIBMNL_DIR := libmnl-$(LIBMNL_VERSION)
@@ -39,7 +40,9 @@ $(WIREGUARD_TAR):
 # use memneq implementation as it doesn't appear to be included on the D218j.
 $(WIREGUARD_DIR)/src/Makefile: $(WIREGUARD_TAR)
 	tar -xf $(WIREGUARD_TAR)
+ifeq ($(HAS_MEMNEQ), 0)
 	patch $(WIREGUARD_DIR)/src/compat/Kbuild.include $(ROOT_DIR)/memneq.patch
+endif
 
 # Build the wg command line tool
 $(WG_TARGET): $(LIBMNL_DIR)/src/.libs/libmnl.a $(WIREGUARD_DIR)/src/Makefile
