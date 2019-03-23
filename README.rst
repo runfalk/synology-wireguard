@@ -64,6 +64,36 @@ To put my WireGuard configuration on the NAS, I used SSH and created a
 *Control panel*, opened the *Task scheduler* and created *Triggered task* that
 runs ``wg-quick up wg0`` on startup.
 
+When running ``iptables`` in the ``PostUp`` and ``PostDown`` rules I needed to
+toggle the interface to make it work. My full startup task looks like this:
+
+.. code-block:: bash
+
+    sleep 60
+    wg-quick up wg0
+    sleep 5
+    wg-quick down wg0
+    sleep 5
+    wg-quick up wg0
+
+My ``/etc/wireguard/wg0.conf`` looks like this:
+
+.. code-block::
+
+    [Interface]
+    Address = 10.0.1.1/16
+    PrivateKey = <nas-private-key>
+    ListenPort = 16666
+    PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+    [Peer]
+    PublicKey = <peer-public-key>
+    AllowedIPs = 10.0.1.2/32
+
+Note that this only works if your network interface is ``eth0``. You can check
+which name your interface has by running ``ip a`` in an SSH session.
+
 
 Compiling
 ---------
