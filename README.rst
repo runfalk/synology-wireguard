@@ -91,8 +91,9 @@ My ``/etc/wireguard/wg0.conf`` looks like this:
     PublicKey = <peer-public-key>
     AllowedIPs = 10.0.1.2/32
 
-Note that this only works if your network interface is ``eth0``. You can check
-which name your interface has by running ``ip a`` in an SSH session.
+Note that you need to modify the rules if your network interface is not
+``eth0``. You can check which name your interface has by running ``ip a`` in an
+SSH session.
 
 
 Compiling
