@@ -106,3 +106,7 @@ I based a lot of this work on
 by Reddit user `akhener <https://www.reddit.com/user/akhener>`_. However, I had
 to modify their instructions a lot since my NAS has an ARM CPU which made cross
 compilation a lot trickier.
+
+GitHub user `galaxysd <https://github.com/galaxysd>`_ made
+`a guide <https://galaxysd.github.io/linux/20170804/2017-08-04-iptables-on-Synology-DSM-6>`_
+on how to enable iptables NAT support.

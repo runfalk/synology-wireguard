@@ -1,20 +1,51 @@
 #!/bin/sh
+
+# This files contain environment variables with .ko files required for iptables
+# support. For some reason it's not loaded by default. The other weird thing
+# is that the .ko-files can't be loaded directly using insmod
+IPTABLES_MODULE_LIST="/usr/syno/etc/iptables_modules_list"
+source "$IPTABLES_MODULE_LIST"
+
+# Binary that allows loading iptables kernel modules
+SYNOMODULETOOL="/usr/syno/bin/synomoduletool"
+
+SERVICE_NAME="WireGuard"
+
 case $1 in
-	start)
-		/sbin/insmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
-		exit 0
-	;;
-	stop)
-		/sbin/rmmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
-		exit 0
-	;;
-	status)
-		/sbin/lsmod | grep wireguard && exit 0 || exit 3
-	;;
-	killall)
+    start)
+        if [ -x "$SYNOMODULETOOL" -a -f "$IPTABLES_MODULE_LIST" ]; then
+            sysctl -w net.ipv4.ip_forward=1
+
+            # Load required modules
+            "$SYNOMODULETOOL" --insmod "$SERVICE_NAME" $KERNEL_MODULES_CORE
+            echo "Loaded $? iptables core modules"
+            "$SYNOMODULETOOL" --insmod "$SERVICE_NAME" $KERNEL_MODULES_NAT
+            echo "Loaded $? iptables NAT modules"
+        fi
+
+        /sbin/insmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
+        exit 0
         ;;
-	log)
-		exit 0
-	;;
+    stop)
+        /sbin/rmmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
+
+        if [ -x "$SYNOMODULETOOL" -a -f "$IPTABLES_MODULE_LIST" ]; then
+            "$SYNOMODULETOOL" --rmmod "$SERVICE_NAME" $KERNEL_MODULES_NAT
+            "$SYNOMODULETOOL" --rmmod "$SERVICE_NAME" $KERNEL_MODULES_CORE
+
+            # NOTE: If another service needs this to be set we may screw them
+            #       over by disabling it here.
+            sysctl -w net.ipv4.ip_forward=0
+        fi
+        exit 0
+        ;;
+    status)
+        /sbin/lsmod | grep wireguard && exit 0 || exit 3
+        ;;
+    killall)
+        ;;
+    log)
+        exit 0
+        ;;
 esac
 
