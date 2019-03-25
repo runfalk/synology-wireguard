@@ -44,6 +44,13 @@ than that, WireGuard will not work. You can check your kernel version by
 logging in through SSH and running the ``uname -a`` command.
 
 
+Known issues
+------------
+* The ``Dns = x.x.x.x`` setting is unsupported. If you try it you will get the
+  following message:
+  ``/usr/local/bin/wg-quick: line 31: resolvconf: command not found``
+
+
 Installation
 ------------
 Check the `releases <https://github.com/runfalk/synology-wireguard/releases>`_
