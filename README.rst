@@ -14,6 +14,20 @@ If you are not comfortable with removing your drives from the NAS and manually
 recover the data, this might not be for you.
 
 
+Known issues
+------------
+* The ``Dns = x.x.x.x`` setting is unsupported. If you try it you will get the
+  following message:
+  ``/usr/local/bin/wg-quick: line 31: resolvconf: command not found``
+* IPv6 is probably not supported (at least not using ``wg-quick``). Due to the
+  system version of ``iproute2``
+  `being too old <https://lists.zx2c4.com/pipermail/wireguard/2018-April/002687.html>`_.
+  You'll get the error message
+  ``Error: argument "suppress_prefixlength" is wrong: Failed to parse rule type``.
+
+PRs that solve these issues are welcome.
+
+
 Compatibility list
 ------------------
 All models marked *Is working* have been confirmed by users to work. If your
@@ -45,13 +59,6 @@ RS816     armada38x  6.2         Yes
 The minimum required kernel version is 3.10. If you have a kernel version lower
 than that, WireGuard will not work. You can check your kernel version by
 logging in through SSH and running the ``uname -a`` command.
-
-
-Known issues
-------------
-* The ``Dns = x.x.x.x`` setting is unsupported. If you try it you will get the
-  following message:
-  ``/usr/local/bin/wg-quick: line 31: resolvconf: command not found``
 
 
 Installation
