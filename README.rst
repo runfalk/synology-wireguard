@@ -27,7 +27,6 @@ DS1019+   apollolake 6.2         Yes
 DS114     armada370  *N/A*       No (Kernel version too old)
 DS115j    armada370  *N/A*       No (Kernel version too old)
 DS1817+   avoton     6.2         Yes
-DS415+    avoton     6.2         Yes
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS214play armada370  *N/A*       No (Kernel version too old)
@@ -36,9 +35,11 @@ DS216se   armada370  *N/A*       No (Kernel version too old)
 DS218+    apollolake 6.2         Yes
 DS218j    armada38x  6.2         Yes
 DS414slim armada370  *N/A*       No (Kernel version too old)
+DS415+    avoton     6.2         Yes
 DS713+    cedarview  6.2         Yes
 DS918+    apollolake 6.2         Yes
 RS214     armada370  *N/A*       No (Kernel version too old)
+RS816     armada38x  6.2         Yes
 ========= ========== =========== ===========================
 
 The minimum required kernel version is 3.10. If you have a kernel version lower
