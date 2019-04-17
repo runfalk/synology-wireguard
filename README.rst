@@ -27,6 +27,7 @@ DS1019+   apollolake 6.2         Yes
 DS114     armada370  *N/A*       No (Kernel version too old)
 DS115j    armada370  *N/A*       No (Kernel version too old)
 DS1817+   avoton     6.2         Yes
+DS415+    avoton     6.2         Yes
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS214play armada370  *N/A*       No (Kernel version too old)
