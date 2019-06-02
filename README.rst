@@ -46,6 +46,7 @@ DS213j    armada370  *N/A*       No (Kernel version too old)
 DS214play armada370  *N/A*       No (Kernel version too old)
 DS214se   armada370  *N/A*       No (Kernel version too old)
 DS216se   armada370  *N/A*       No (Kernel version too old)
+DS216j    armada38x  6.2         Yes
 DS218+    apollolake 6.2         Yes
 DS218j    armada38x  6.2         Yes
 DS414slim armada370  *N/A*       No (Kernel version too old)
