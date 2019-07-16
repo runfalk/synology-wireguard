@@ -14,8 +14,8 @@ If you are not comfortable with removing your drives from the NAS and manually
 recover the data, this might not be for you.
 
 
-Known issues
-------------
+FAQ/Known issues
+----------------
 * The ``Dns = x.x.x.x`` setting is unsupported. If you try it you will get the
   following message:
   ``/usr/local/bin/wg-quick: line 31: resolvconf: command not found``
@@ -24,6 +24,11 @@ Known issues
   `being too old <https://lists.zx2c4.com/pipermail/wireguard/2018-April/002687.html>`_.
   You'll get the error message
   ``Error: argument "suppress_prefixlength" is wrong: Failed to parse rule type``.
+* The error `error: redefinition of 'crypto_memneq'` means that you architecture
+  does not need the memneq workaround in wireguard. To work around the issue you
+  can pass `--env HAS_MEMNEQ=1` as an additional argument to you docker build.
+  If it works, please create an issue or send a PR to fix it properly for your
+  architecture.
 
 PRs that solve these issues are welcome.
 
