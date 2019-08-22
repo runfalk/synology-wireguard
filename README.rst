@@ -57,6 +57,7 @@ DS218j    armada38x  6.2         Yes
 DS414slim armada370  *N/A*       No (Kernel version too old)
 DS415+    avoton     6.2         Yes
 DS713+    cedarview  6.2         Yes
+DS716+II  braswell   6.2         Yes
 DS918+    apollolake 6.2         Yes
 RS214     armada370  *N/A*       No (Kernel version too old)
 RS816     armada38x  6.2         Yes
