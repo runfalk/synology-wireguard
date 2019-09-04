@@ -61,6 +61,7 @@ DS716+II  braswell   6.2         Yes
 DS918+    apollolake 6.2         Yes
 RS214     armada370  *N/A*       No (Kernel version too old)
 RS816     armada38x  6.2         Yes
+DS216+II  braswell   6.2         Yes
 ========= ========== =========== ===========================
 
 The minimum required kernel version is 3.10. If you have a kernel version lower
