@@ -146,7 +146,7 @@ Now we can build for any platform and DSM version using:
 
 .. code-block:: bash
 
-    sudo docker run --rm --privileged --env PACKAGE_ARCH=<arch> --env DSM_VER=<dsm-ver> -v $(pwd)/artifacts:/result_spk -v $(pwd)/sdk_cache:/toolkit_tarballs synobuild
+    sudo docker run --rm --privileged --env PACKAGE_ARCH=<arch> --env DSM_VER=<dsm-ver> -v $(pwd)/artifacts:/result_spk synobuild
 
 You should replace ``<arch>`` with your NAS's package arch. Using
 `this table <https://www.synology.com/en-global/knowledgebase/DSM/tutorial/General/What_kind_of_CPU_does_my_NAS_have>`_
@@ -158,7 +158,7 @@ For the DS218j that I have, the complete command looks like this:
 
 .. code-block:: bash
 
-    sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk -v $(pwd)/sdk_cache:/toolkit_tarballs synobuild
+    sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk synobuild
 
 If everything worked you should have a directory called ``artifacts`` that
 contains your SPK files.
