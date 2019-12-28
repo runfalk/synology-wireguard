@@ -24,11 +24,18 @@ FAQ/Known issues
   `being too old <https://lists.zx2c4.com/pipermail/wireguard/2018-April/002687.html>`_.
   You'll get the error message
   ``Error: argument "suppress_prefixlength" is wrong: Failed to parse rule type``.
-* The error `error: redefinition of 'crypto_memneq'` means that you architecture
+* The error ``error: redefinition of 'crypto_memneq'`` means that you architecture
   does not need the memneq workaround in wireguard. To work around the issue you
-  can pass `--env HAS_MEMNEQ=1` as an additional argument to you docker build.
+  can pass ``--env HAS_MEMNEQ=1`` as an additional argument to you docker build.
   If it works, please create an issue or send a PR to fix it properly for your
   architecture.
+* Everything appears to be OK when running ``wg show`` but no traffic is flowing
+  through the tunnel. Apparently there is some kind of race when setting up the
+  interface. The simplest known workaround is to append
+  ``; sleep 5; ip route add 10.0.0.0/16 dev wg0`` to the ``PostUp`` rule. This
+  assumes that your WireGuard IP subnet is ``10.0.x.x``. See
+  `issue #10 <https://github.com/runfalk/synology-wireguard/issues/10>`_ for
+  more information.
 
 PRs that solve these issues are welcome.
 
@@ -139,7 +146,7 @@ Now we can build for any platform and DSM version using:
 
 .. code-block:: bash
 
-    sudo docker run --rm --privileged --env PACKAGE_ARCH=<arch> --env DSM_VER=<dsm-ver> -v $(pwd)/artifacts:/result_spk synobuild
+    sudo docker run --rm --privileged --env PACKAGE_ARCH=<arch> --env DSM_VER=<dsm-ver> -v $(pwd)/artifacts:/result_spk -v $(pwd)/sdk_cache:/toolkit_tarballs synobuild
 
 You should replace ``<arch>`` with your NAS's package arch. Using
 `this table <https://www.synology.com/en-global/knowledgebase/DSM/tutorial/General/What_kind_of_CPU_does_my_NAS_have>`_
@@ -151,7 +158,7 @@ For the DS218j that I have, the complete command looks like this:
 
 .. code-block:: bash
 
-    sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk synobuild
+    sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk -v $(pwd)/sdk_cache:/toolkit_tarballs synobuild
 
 If everything worked you should have a directory called ``artifacts`` that
 contains your SPK files.
