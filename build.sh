@@ -45,7 +45,7 @@ set +e
 # built in memneq support. Unless HAS_MEMNEQ is defined we set it for models
 # that support it here.
 if [ -z ${HAS_MEMNEQ+x} ]; then
-    if [[ "$PACKAGE_ARCH" =~ ^apollolake|denverton$ ]]; then
+    if [[ "$PACKAGE_ARCH" =~ ^apollolake|denverton|rtd1296$ ]]; then
         export HAS_MEMNEQ=1
     fi
 fi
