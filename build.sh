@@ -15,6 +15,10 @@ if [ -z ${DSM_VER+x} ]; then
     exit 3
 fi
 
+export WIREGUARD_VERSION=$(wget -q https://git.zx2c4.com/wireguard-linux-compat/refs/ -O - | grep -oP '\/wireguard-linux-compat\/tag\/\?h=v\K[.0-9]*' | head -n 1)
+export WIREGUARD_TOOLS_VERSION=$(wget -q https://git.zx2c4.com/wireguard-tools/refs/ -O - | grep -oP '\/wireguard-tools\/tag\/\?h=v\K[.0-9]*' | head -n 1)
+export LIBMNL_VERSION=$(wget -q 'https://netfilter.org/projects/libmnl/files/?C=M;O=D' -O - | grep -oP 'a href="libmnl-\K[0-9.]*' | head -n 1 | sed 's/.\{1\}$//')
+
 # Ensure that we are working directly in the root file system. Though this
 # should always be the case in containers.
 cd /
@@ -23,14 +27,24 @@ cd /
 set -e
 
 # Fetch Synology toolchain
-if [ ! -d /pkgscripts-ng ]; then
+if [[ ! -d /pkgscripts-ng ]] || [ -z "$(ls -A /pkgscripts-ng)" ]; then
     git clone https://github.com/SynologyOpenSource/pkgscripts-ng
+else
+    echo "Existing pkgscripts-ng repo found. Pulling latest from origin."
+    cd /pkgscripts-ng
+    git pull origin
+    cd /
 fi
 
 # Install the toolchain for the given package arch and DSM version
 build_env="/build_env/ds.$PACKAGE_ARCH-$DSM_VER"
+
 if [ ! -d "$build_env" ]; then
-    pkgscripts-ng/EnvDeploy -p $PACKAGE_ARCH -v $DSM_VER
+    if [ -f "/toolkit_tarballs/base_env-$DSM_VER.txz" ] && [ -f "/toolkit_tarballs/ds.$PACKAGE_ARCH-$DSM_VER.env.txz" ] && [ -f "/toolkit_tarballs/ds.$PACKAGE_ARCH-$DSM_VER.dev.txz" ]; then
+        pkgscripts-ng/EnvDeploy -p $PACKAGE_ARCH -v $DSM_VER -t /toolkit_tarballs
+    else
+        pkgscripts-ng/EnvDeploy -p $PACKAGE_ARCH -v $DSM_VER
+    fi
 
     # Ensure the installed toolchain has support for CA signed certificates.
     # Without this wget on https:// will fail
@@ -41,7 +55,7 @@ fi
 set +e
 
 # By default we patch WireGuard to always use include its own memneq
-# implemenation. This is required on most NASes, but some of them come with
+# implementation. This is required on most NASes, but some of them come with
 # built in memneq support. Unless HAS_MEMNEQ is defined we set it for models
 # that support it here.
 if [ -z ${HAS_MEMNEQ+x} ]; then

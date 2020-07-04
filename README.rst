@@ -167,6 +167,21 @@ If everything worked you should have a directory called ``artifacts`` that
 contains your SPK files.
 
 
+Avoiding timeouts when downloading build files
+----------------------------------------------
+It can take a long time to pull development files from SourceForge, including
+occasional timeouts. To get around this, create a folder locally and map it to
+the `/toolkit_tarballs` Docker volume using the following command:
+`-v $(pwd)/<path/to/folder>:/toolkit_tarballs`
+to the `docker run` command listed above. This will allow the development files
+to be stored on your host machine instead of ephemerally in the container. The
+image will check for existing development files in that folder and will use
+them instead of pulling them from SourceForge when possible. You can also
+download the files directly and put them in the folder you created by downloading
+them from here: https://sourceforge.net/projects/dsgpl/files/toolkit/DSM<DSM_VER>
+(e.g. https://sourceforge.net/projects/dsgpl/files/toolkit/DSM6.2)
+
+
 Credits
 -------
 I based a lot of this work on

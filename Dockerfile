@@ -1,4 +1,6 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
+
+VOLUME [ "/toolkit_tarballs" ]
 
 ENV IS_IN_CONTAINER 1
 
