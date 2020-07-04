@@ -2,7 +2,7 @@
 source /pkgscripts-ng/include/pkg_util.sh
 
 package="WireGuard"
-version="1.0.20200401"
+version="$WIREGUARD_VERSION"
 displayname="WireGuard"
 maintainer="Andreas Runfalk"
 arch="$(pkg_get_platform)"
