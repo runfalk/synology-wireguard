@@ -83,6 +83,15 @@ The minimum required kernel version is 3.10. If you have a kernel version lower
 than that, WireGuard will not work. You can check your kernel version by
 logging in through SSH and running the ``uname -a`` command.
 
+This project is also confirmed to be compatible with other brand NAS stations
+using [XPEnology](https://xpenology.com/forum/topic/9392-general-faq/).
+
+========= ================ ========== =========== ===========================
+Model     Hardware version Platform   DSM Version Is working?
+--------- ---------------- ---------- ----------- ---------------------------
+HP54NL    DS3615xs         bromolow   6.2         Yes
+========= ================ ========== =========== ===========================
+
 
 Installation
 ------------
