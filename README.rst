@@ -84,7 +84,7 @@ than that, WireGuard will not work. You can check your kernel version by
 logging in through SSH and running the ``uname -a`` command.
 
 This project is also confirmed to be compatible with other brand NAS stations
-using [XPEnology](https://xpenology.com/forum/topic/9392-general-faq/).
+using `XPEnology <https://xpenology.com/forum/topic/9392-general-faq/>`_.
 
 ========= ================ ========== =========== ===========================
 Model     Hardware version Platform   DSM Version Is working?
