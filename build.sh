@@ -41,6 +41,14 @@ else
     cd /
 fi
 
+# Temporary workaround for some architectures that are not part properly set as
+# 64 bit: https://github.com/SynologyOpenSource/pkgscripts-ng/pull/26/
+# NOTE: This fix breaks your workflow if you save the pkgscripts-ng repo state
+#       across runs
+if [[ "$PACKAGE_ARCH" =~ ^geminilake|purley|v1000$ ]]; then
+    sed -i 's/\(local all64BitPlatforms\)=".*"/\1="PURLEY V1000 GEMINILAKE"/' /pkgscripts-ng/include/platforms
+fi
+
 # Temporary add support for 7.0 (until the official repo is updated)
 grep -q '^AvailablePlatform_7_0=' /pkgscripts-ng/include/toolkit.config || \
     echo 'AvailablePlatform_7_0="6281 alpine alpine4k apollolake armada370 armada375 armada37xx armada38x armadaxp avoton braswell broadwell broadwellnk bromolow cedarview comcerto2k denverton dockerx64 evansport geminilake grantley hi3535 kvmx64 monaco purley qoriq rtd1296 v1000 x64"' >> /pkgscripts-ng/include/toolkit.config
@@ -68,7 +76,7 @@ set +e
 # built in memneq support. Unless HAS_MEMNEQ is defined we set it for models
 # that support it here.
 if [ -z ${HAS_MEMNEQ+x} ]; then
-    if [[ "$PACKAGE_ARCH" =~ ^geminilake|apollolake|denverton|rtd1296$ ]]; then
+    if [[ "$PACKAGE_ARCH" =~ ^geminilake|apollolake|denverton|broadwellnk|rtd1296$ ]]; then
         export HAS_MEMNEQ=1
     fi
 fi
