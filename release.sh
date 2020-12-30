@@ -57,7 +57,7 @@ for arch in ${ARCHS[@]}; do
         --rm \
         --privileged \
         --env PACKAGE_ARCH=$arch \
-        --env DSM_VER=6.2 \
+        --env DSM_VER=$VER \
         -v $(pwd)/artifacts:/result_spk \
         -v $(pwd)/toolkit_tarballs:/toolkit_tarballs \
         synobuild

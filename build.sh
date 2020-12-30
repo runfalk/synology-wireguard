@@ -41,6 +41,10 @@ else
     cd /
 fi
 
+# Temporary add support for 7.0 (until the official repo is updated)
+grep -q '^AvailablePlatform_7_0=' /pkgscripts-ng/include/toolkit.config || \
+    echo 'AvailablePlatform_7_0="6281 alpine alpine4k apollolake armada370 armada375 armada37xx armada38x armadaxp avoton braswell broadwell broadwellnk bromolow cedarview comcerto2k denverton dockerx64 evansport geminilake grantley hi3535 kvmx64 monaco purley qoriq rtd1296 v1000 x64"' >> /pkgscripts-ng/include/toolkit.config
+
 # Install the toolchain for the given package arch and DSM version
 build_env="/build_env/ds.$PACKAGE_ARCH-$DSM_VER"
 
