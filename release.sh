@@ -6,8 +6,13 @@ ARCHS=(
     "avoton"
     "braswell"
     "broadwell"
+    "broadwellnk"
+    "bromolow"
     "cedarview"
     "denverton"
+    "geminilake"
+    "kvmx64"
+    "monaco"
     "rtd1296"
     "x64"
 )
