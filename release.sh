@@ -1,7 +1,7 @@
 #!/bin/bash
-VER=6.2
+VER=7.0
 ARCHS=(
-    "apollolake"
+    # "apollolake"
     "armada38x"
     "avoton"
     "braswell"
@@ -14,7 +14,7 @@ ARCHS=(
     "kvmx64"
     "monaco"
     "rtd1296"
-    "x64"
+    # "x64"
 )
 
 set -e
