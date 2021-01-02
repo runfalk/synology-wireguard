@@ -1,4 +1,4 @@
-HAS_MEMNEQ ?= 0
+HAS_MEMNEQ ?= 1
 
 LIBMNL_TAR := libmnl-$(LIBMNL_VERSION).tar.bz2
 LIBMNL_DIR := libmnl-$(LIBMNL_VERSION)
