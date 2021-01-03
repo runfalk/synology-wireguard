@@ -76,8 +76,8 @@ set +e
 # built in memneq support. Unless HAS_MEMNEQ is defined we set it for models
 # that support it here.
 if [ -z ${HAS_MEMNEQ+x} ]; then
-    if [[ "$PACKAGE_ARCH" =~ ^bromolow|6281|x64|cedarview|qoriq|armadaxp|armada370|armada375|evansport|comcerto2k|avoton|alpine|alpine4k|braswell|monaco|armada38x|hi3535|broadwell|dockerx64|grantley$ ]]; then
-        export HAS_MEMNEQ=0
+    if [[ "$DSM_VER" =~ ^[^6]\.[0-9]+$ || "$PACKAGE_ARCH" =~ ^geminilake|apollolake|denverton|broadwellnk|kvmx64|rtd1296$ ]]; then
+        export HAS_MEMNEQ=1
     fi
 fi
 
