@@ -1,4 +1,4 @@
-HAS_MEMNEQ ?= 1
+APPLY_MEMNEQ_PATCH ?= 0
 
 LIBMNL_TAR := libmnl-$(LIBMNL_VERSION).tar.bz2
 LIBMNL_DIR := libmnl-$(LIBMNL_VERSION)
@@ -41,10 +41,10 @@ $(WIREGUARD_TOOLS_TAR):
 	wget https://git.zx2c4.com/wireguard-tools/snapshot/$(WIREGUARD_TOOLS_TAR)
 
 # Unpack WireGuard source tarball and patch the compatibility layer to always
-# use memneq implementation as it doesn't appear to be included on the D218j.
+# use memneq implementation if required.
 $(WIREGUARD_DIR)/src/Makefile: $(WIREGUARD_TAR)
 	tar -xf $(WIREGUARD_TAR)
-ifeq ($(HAS_MEMNEQ), 0)
+ifeq ($(APPLY_MEMNEQ_PATCH), 1)
 	patch $(WIREGUARD_DIR)/src/compat/Kbuild.include $(ROOT_DIR)/memneq.patch
 endif
 

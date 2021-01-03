@@ -24,11 +24,6 @@ FAQ/Known issues
   `being too old <https://lists.zx2c4.com/pipermail/wireguard/2018-April/002687.html>`_.
   You'll get the error message
   ``Error: argument "suppress_prefixlength" is wrong: Failed to parse rule type``.
-* The error ``error: redefinition of 'crypto_memneq'`` means that you architecture
-  does not need the memneq workaround in wireguard. To work around the issue you
-  can pass ``--env HAS_MEMNEQ=1`` as an additional argument to you docker build.
-  If it works, please create an issue or send a PR to fix it properly for your
-  architecture.
 * Everything appears to be OK when running ``wg show`` but no traffic is flowing
   through the tunnel. Apparently there is some kind of race when setting up the
   interface. The simplest known workaround is to append
