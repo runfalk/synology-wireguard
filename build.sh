@@ -71,14 +71,18 @@ fi
 # Disable quit if errors to allow printing of logfiles
 set +e
 
-# By default we patch WireGuard to always use include its own memneq
-# implementation. This is required on most NASes, but some of them come with
-# built in memneq support. Unless HAS_MEMNEQ is defined we set it for models
-# that support it here.
-if [ -z ${HAS_MEMNEQ+x} ]; then
-    if [[ "$DSM_VER" =~ ^[^6]\.[0-9]+$ || "$PACKAGE_ARCH" =~ ^geminilake|apollolake|denverton|broadwellnk|kvmx64|rtd1296$ ]]; then
-        export HAS_MEMNEQ=1
-    fi
+# Patch WireGuard to use its own included memneq implementation if architecture
+# does not have built in memneq support.
+if [ -z ${APPLY_MEMNEQ_PATCH+x} ]; then
+  source "/pkgscripts-ng/include/platform.$PACKAGE_ARCH"
+  if [ ! -z ${ToolChainSysRoot64} ]; then
+    ToolChainSysRoot=ToolChainSysRoot64
+  elif [ ! -z ${ToolChainSysRoot32} ]; then
+    ToolChainSysRoot=ToolChainSysRoot32
+  fi
+  if ! grep -q "int crypto_memneq" "$build_env/$ToolChainSysRoot64/usr/lib/modules/DSM-$DSM_VER/build/include/crypto/algapi.h"; then
+    export APPLY_MEMNEQ_PATCH=1
+  fi
 fi
 
 # Build packages
