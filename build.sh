@@ -76,11 +76,14 @@ set +e
 if [ -z ${APPLY_MEMNEQ_PATCH+x} ]; then
   source "/pkgscripts-ng/include/platform.$PACKAGE_ARCH"
   if [ ! -z ${ToolChainSysRoot64} ]; then
-    ToolChainSysRoot=ToolChainSysRoot64
+    ToolChainSysRoot="$ToolChainSysRoot64"
   elif [ ! -z ${ToolChainSysRoot32} ]; then
-    ToolChainSysRoot=ToolChainSysRoot32
+    ToolChainSysRoot="$ToolChainSysRoot32"
   fi
-  if ! grep -q "int crypto_memneq" "$build_env/$ToolChainSysRoot64/usr/lib/modules/DSM-$DSM_VER/build/include/crypto/algapi.h"; then
+  if ! grep -q "int crypto_memneq" "$build_env/$ToolChainSysRoot/usr/lib/modules/DSM-$DSM_VER/build/include/crypto/algapi.h"; then
+    export APPLY_MEMNEQ_PATCH=1
+  elif grep -q "#if defined(CONFIG_SYNO_BACKPORT_ARM_CRYPTO)" "$build_env/$ToolChainSysRoot/usr/lib/modules/DSM-$DSM_VER/build/include/crypto/algapi.h" && \
+  ! grep -qx "CONFIG_SYNO_BACKPORT_ARM_CRYPTO=y" "$build_env/$ToolChainSysRoot/usr/lib/modules/DSM-$DSM_VER/build/.config"; then
     export APPLY_MEMNEQ_PATCH=1
   fi
 fi
