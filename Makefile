@@ -1,4 +1,5 @@
 APPLY_MEMNEQ_PATCH ?= 0
+APPLY_SPINLOCK_PATCH ?= 0
 
 LIBMNL_TAR := libmnl-$(LIBMNL_VERSION).tar.bz2
 LIBMNL_DIR := libmnl-$(LIBMNL_VERSION)
@@ -40,12 +41,19 @@ $(WIREGUARD_TAR):
 $(WIREGUARD_TOOLS_TAR):
 	wget https://git.zx2c4.com/wireguard-tools/snapshot/$(WIREGUARD_TOOLS_TAR)
 
-# Unpack WireGuard source tarball and patch the compatibility layer to always
-# use memneq implementation if required.
+# Unpack WireGuard source tarball. Patch the wireguard interface verification
+# due to the unavailability of rtnl_link_ops structure in the network device on DSM 7.0.
+# If required, patch the compatibility layer to always use memneq implementation
+# and patch the spinlock implementation.
 $(WIREGUARD_DIR)/src/Makefile: $(WIREGUARD_TAR)
 	tar -xf $(WIREGUARD_TAR)
+	patch $(WIREGUARD_DIR)/src/netlink.c $(ROOT_DIR)/patch/netlink.patch
+	patch $(WIREGUARD_DIR)/src/peerlookup.c $(ROOT_DIR)/patch/peerlookup.patch
 ifeq ($(APPLY_MEMNEQ_PATCH), 1)
-	patch $(WIREGUARD_DIR)/src/compat/Kbuild.include $(ROOT_DIR)/memneq.patch
+	patch $(WIREGUARD_DIR)/src/compat/Kbuild.include $(ROOT_DIR)/patch/memneq.patch
+endif
+ifeq ($(APPLY_SPINLOCK_PATCH), 1)
+	patch $(WIREGUARD_DIR)/src/ratelimiter.c $(ROOT_DIR)/patch/spinlock.patch
 endif
 
 $(WIREGUARD_TOOLS_DIR)/src/Makefile: $(WIREGUARD_TOOLS_TAR)
@@ -68,6 +76,7 @@ install: all
 	install $(WG_TARGET) $(DESTDIR)/wireguard/
 	install $(WG_QUICK_TARGET) $(DESTDIR)/wireguard/
 	install $(WG_MODULE_TARGET) $(DESTDIR)/wireguard/
+	install $(ROOT_DIR)/wireguard/wg-init $(DESTDIR)/wireguard/
 
 clean:
 	rm -rf $(LIBMNL_TAR) $(LIBMNL_DIR) $(WIREGUARD_TAR) $(WIREGUARD_DIR) $(WIREGUARD_TOOLS_TAR) $(WIREGUARD_TOOLS_DIR)

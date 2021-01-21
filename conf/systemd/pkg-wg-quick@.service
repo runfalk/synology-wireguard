@@ -1,0 +1,21 @@
+[Unit]
+Description=WireGuard via wg-quick(8) for %I
+After=pkgctl-WireGuard.service
+Wants=pkgctl-WireGuard.service
+Documentation=man:wg-quick(8)
+Documentation=man:wg(8)
+Documentation=https://www.wireguard.com/
+Documentation=https://www.wireguard.com/quickstart/
+Documentation=https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8
+Documentation=https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/wg-quick up %i
+ExecStop=/usr/local/bin/wg-quick down %i
+ExecReload=/bin/bash -c 'exec /usr/local/bin/wg syncconf %i <(exec /usr/local/bin/wg-quick strip %i)'
+Environment=WG_ENDPOINT_RESOLUTION_RETRIES=infinity
+
+[Install]
+WantedBy=syno-low-priority-packages.target

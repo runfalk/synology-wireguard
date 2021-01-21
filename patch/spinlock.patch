@@ -1,0 +1,12 @@
+--- ratelimiter.c	2021-01-19 01:34:52.624027083 +0100
++++ ratelimiter.c	2021-01-19 01:38:32.474371582 +0100
+@@ -21,6 +21,9 @@
+ #include <linux/slab.h>
+ #include <net/ip.h>
+ 
++#define spin_lock(lock) __raw_spin_lock(&(lock)->rlock)
++#define spin_unlock(lock)   __raw_spin_unlock(&(lock)->rlock)
++
+ static struct kmem_cache *entry_cache;
+ static hsiphash_key_t key;
+ static spinlock_t table_lock = __SPIN_LOCK_UNLOCKED("ratelimiter_table_lock");

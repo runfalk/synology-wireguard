@@ -33,7 +33,13 @@ echo
 
 # Fetch Synology toolchain
 if [[ ! -d /pkgscripts-ng ]] || [ -z "$(ls -A /pkgscripts-ng)" ]; then
-    git clone https://github.com/SynologyOpenSource/pkgscripts-ng
+    clone_args=""
+    # If the DSM version is 7.0, use the DSM7.0 branch of pkgscripts-ng
+    if [[ "$DSM_VER" =~ ^7\.[0-9]+$ ]]; then
+        clone_args="-b DSM7.0"
+        export PRODUCT="DSM"
+    fi
+    git clone ${clone_args} https://github.com/SynologyOpenSource/pkgscripts-ng
 else
     echo "Existing pkgscripts-ng repo found. Pulling latest from origin."
     cd /pkgscripts-ng
@@ -41,17 +47,37 @@ else
     cd /
 fi
 
-# Temporary workaround for some architectures that are not part properly set as
-# 64 bit: https://github.com/SynologyOpenSource/pkgscripts-ng/pull/26/
-# NOTE: This fix breaks your workflow if you save the pkgscripts-ng repo state
-#       across runs
-if [[ "$PACKAGE_ARCH" =~ ^geminilake|purley|v1000$ ]]; then
-    sed -i 's/\(local all64BitPlatforms\)=".*"/\1="PURLEY V1000 GEMINILAKE"/' /pkgscripts-ng/include/platforms
+# Configure the package according to the DSM version
+if [[ "$DSM_VER" =~ ^7\.[0-9]+$ ]]; then
+    os_min_ver="7.0-40000"
+    pkgscripts_args=""
+
+    # Synology has added a strict requirement on DSM 7.0 to prevent packages
+    # not signed by Synology from running with root privileges.
+    # Change the permission to run the package to lower in order
+    # to successfully install the package.
+    sed -i "s/root/package/" /source/WireGuard/conf/privilege
+
+    # For Virtual DSM 7.0 (vkmx64) the wireguard kernel module
+    # requires a spinlock implementation patch
+    if [[ "$PACKAGE_ARCH" =~ ^(kvmx64)$ ]]; then
+        export APPLY_SPINLOCK_PATCH=1
+    fi
+else
+    os_min_ver="6.0-5941"
+    pkgscripts_args="-S"
+
+    # Temporary workaround for some architectures that are not part properly set as
+    # 64 bit: https://github.com/SynologyOpenSource/pkgscripts-ng/pull/26/
+    # NOTE: This fix breaks your workflow if you save the pkgscripts-ng repo state
+    #       across runs
+    if [[ "$PACKAGE_ARCH" =~ ^(geminilake|purley|v1000)$ ]]; then
+        sed -i 's/\(local all64BitPlatforms\)=".*"/\1="PURLEY V1000 GEMINILAKE"/' /pkgscripts-ng/include/platforms
+    fi
 fi
 
-# Temporary add support for 7.0 (until the official repo is updated)
-grep -q '^AvailablePlatform_7_0=' /pkgscripts-ng/include/toolkit.config || \
-    echo 'AvailablePlatform_7_0="6281 alpine alpine4k apollolake armada370 armada375 armada37xx armada38x armadaxp avoton braswell broadwell broadwellnk bromolow cedarview comcerto2k denverton dockerx64 evansport geminilake grantley hi3535 kvmx64 monaco purley qoriq rtd1296 v1000 x64"' >> /pkgscripts-ng/include/toolkit.config
+sed -i "s/DSM_VER/$DSM_VER/" /source/WireGuard/SynoBuildConf/depends
+sed -i "s/OS_MIN_VER/$os_min_ver/" /source/WireGuard/INFO.sh
 
 # Install the toolchain for the given package arch and DSM version
 build_env="/build_env/ds.$PACKAGE_ARCH-$DSM_VER"
@@ -67,9 +93,6 @@ if [ ! -d "$build_env" ]; then
     # Without this wget on https:// will fail
     cp /etc/ssl/certs/ca-certificates.crt "$build_env/etc/ssl/certs/"
 fi
-
-# Disable quit if errors to allow printing of logfiles
-set +e
 
 # Patch WireGuard to use its own included memneq implementation if architecture
 # does not have built in memneq support.
@@ -88,6 +111,9 @@ if [ -z ${APPLY_MEMNEQ_PATCH+x} ]; then
   fi
 fi
 
+# Disable quit if errors to allow printing of logfiles
+set +e
+
 # Build packages
 #   -p              package arch
 #   -v              DSM version
@@ -98,7 +124,7 @@ fi
 pkgscripts-ng/PkgCreate.py \
     -p $PACKAGE_ARCH \
     -v $DSM_VER \
-    -S \
+    ${pkgscripts_args} \
     --build-opt=-J \
     --print-log \
     -c WireGuard
