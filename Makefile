@@ -76,7 +76,7 @@ install: all
 	install $(WG_TARGET) $(DESTDIR)/wireguard/
 	install $(WG_QUICK_TARGET) $(DESTDIR)/wireguard/
 	install $(WG_MODULE_TARGET) $(DESTDIR)/wireguard/
-	install $(ROOT_DIR)/wireguard/wg-init $(DESTDIR)/wireguard/
+	install $(ROOT_DIR)/wireguard/wg-autostart $(DESTDIR)/wireguard/
 
 clean:
 	rm -rf $(LIBMNL_TAR) $(LIBMNL_DIR) $(WIREGUARD_TAR) $(WIREGUARD_DIR) $(WIREGUARD_TOOLS_TAR) $(WIREGUARD_TOOLS_DIR)

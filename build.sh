@@ -56,7 +56,7 @@ if [[ "$DSM_VER" =~ ^7\.[0-9]+$ ]]; then
     # not signed by Synology from running with root privileges.
     # Change the permission to run the package to lower in order
     # to successfully install the package.
-    sed -i "s/root/package/" /source/WireGuard/conf/privilege
+    run_as="package"
 
     # For Virtual DSM 7.0 (vkmx64) the wireguard kernel module
     # requires a spinlock implementation patch
@@ -65,6 +65,7 @@ if [[ "$DSM_VER" =~ ^7\.[0-9]+$ ]]; then
     fi
 else
     os_min_ver="6.0-5941"
+    run_as="root"
     pkgscripts_args="-S"
 
     # Temporary workaround for some architectures that are not part properly set as
@@ -76,8 +77,10 @@ else
     fi
 fi
 
-sed -i "s/DSM_VER/$DSM_VER/" /source/WireGuard/SynoBuildConf/depends
-sed -i "s/OS_MIN_VER/$os_min_ver/" /source/WireGuard/INFO.sh
+package_dir=`dirname $0`
+cp -p "$package_dir/template/INFO.sh" "$package_dir/INFO.sh" && sed -i "s/OS_MIN_VER/$os_min_ver/" "$package_dir/INFO.sh"
+cp -p "$package_dir/template/conf/privilege" "$package_dir/conf/privilege" && sed -i "s/RUN_AS/$run_as/" "$package_dir/conf/privilege"
+cp -p "$package_dir/template/SynoBuildConf/depends" "$package_dir/SynoBuildConf/depends" && sed -i "s/DSM_VER/$DSM_VER/" "$package_dir/SynoBuildConf/depends"
 
 # Install the toolchain for the given package arch and DSM version
 build_env="/build_env/ds.$PACKAGE_ARCH-$DSM_VER"
@@ -132,6 +135,9 @@ pkgscripts-ng/PkgCreate.py \
 # Save package builder exit code. This allows us to print the logfiles and give
 # a non-zero exit code on errors.
 pkg_status=$?
+
+# Clean up the build environment
+rm "$package_dir/INFO.sh" "$package_dir/conf/privilege" "$package_dir/SynoBuildConf/depends"
 
 echo "Build log"
 echo "========="

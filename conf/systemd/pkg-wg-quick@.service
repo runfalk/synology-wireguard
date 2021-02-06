@@ -2,12 +2,11 @@
 Description=WireGuard via wg-quick(8) for %I
 After=pkgctl-WireGuard.service
 Wants=pkgctl-WireGuard.service
-Documentation=man:wg-quick(8)
-Documentation=man:wg(8)
-Documentation=https://www.wireguard.com/
-Documentation=https://www.wireguard.com/quickstart/
+Documentation=https://github.com/runfalk/synology-wireguard
 Documentation=https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8
 Documentation=https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8
+Documentation=https://www.wireguard.com/
+Documentation=https://www.wireguard.com/quickstart/
 
 [Service]
 Type=oneshot
