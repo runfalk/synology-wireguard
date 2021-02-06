@@ -152,7 +152,7 @@ Adding WireGuard to autostart
 DSM since version 7.0 comes with `systemd unit <https://www.freedesktop.org/software/systemd/man/systemd.unit.html>`_ support, while for previous versions you can use the built-in `upstart <http://upstart.ubuntu.com/>`_.
 To standardize the process of adding the WireGuard interface to the autostart, a simple ``wg-autostart`` script has been developed.
 
-**Important note:** before adding the interface to the autostart, start it manually by ``sudo wg-quick up wg0`` ensure that it does not cause the system to to crash and that you can still access your NAS properly. Otherwise, you may not be able to start the NAS or you may not be able to access the device after a reboot.
+**Important note:** before adding the interface to the autostart, start it manually by ``sudo wg-quick up wg0`` ensure that it does not cause the system to crash and that you can still access your NAS properly. Otherwise, you may not be able to start the NAS or you may not be able to access the device after a reboot.
 
 To add the ``wg0`` interface to the autostart, run the command:
 
