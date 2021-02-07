@@ -7,7 +7,7 @@
 -	if (!dev->rtnl_link_ops || !dev->rtnl_link_ops->kind ||
 -	    strcmp(dev->rtnl_link_ops->kind, KBUILD_MODNAME)) {
 +	if (!dev->dev.type || !dev->dev.type->name ||
-+			strcmp(dev->dev.type->name, KBUILD_MODNAME)) {
++	    strcmp(dev->dev.type->name, KBUILD_MODNAME)) {
  		dev_put(dev);
  		return ERR_PTR(-EOPNOTSUPP);
  	}
