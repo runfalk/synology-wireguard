@@ -67,14 +67,6 @@ else
     os_min_ver="6.0-5941"
     run_as="root"
     pkgscripts_args="-S"
-
-    # Temporary workaround for some architectures that are not part properly set as
-    # 64 bit: https://github.com/SynologyOpenSource/pkgscripts-ng/pull/26/
-    # NOTE: This fix breaks your workflow if you save the pkgscripts-ng repo state
-    #       across runs
-    if [[ "$PACKAGE_ARCH" =~ ^(geminilake|purley|v1000)$ ]]; then
-        sed -i 's/\(local all64BitPlatforms\)=".*"/\1="PURLEY V1000 GEMINILAKE"/' /pkgscripts-ng/include/platforms
-    fi
 fi
 
 package_dir=`dirname $0`
