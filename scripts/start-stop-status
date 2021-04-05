@@ -4,7 +4,6 @@
 # support. For some reason it's not loaded by default. The other weird thing
 # is that the .ko-files can't be loaded directly using insmod
 IPTABLES_MODULE_LIST="/usr/syno/etc/iptables_modules_list"
-source "$IPTABLES_MODULE_LIST"
 
 # Binary that allows loading iptables kernel modules
 SYNOMODULETOOL="/usr/syno/bin/synomoduletool"
@@ -13,6 +12,7 @@ SERVICE_NAME="WireGuard"
 
 case $1 in
     start)
+        source "$IPTABLES_MODULE_LIST"
         if [ -x "$SYNOMODULETOOL" -a -f "$IPTABLES_MODULE_LIST" ]; then
             sysctl -w net.ipv4.ip_forward=1
 
@@ -27,6 +27,7 @@ case $1 in
         exit 0
         ;;
     stop)
+        source "$IPTABLES_MODULE_LIST"
         /sbin/rmmod $SYNOPKG_PKGDEST/wireguard/wireguard.ko
 
         if [ -x "$SYNOMODULETOOL" -a -f "$IPTABLES_MODULE_LIST" ]; then

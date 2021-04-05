@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# This script standardizes the process of adding the WireGuard interface to the autostart. Type wg-autostart for usage instruction.
+# For DSM 7, systemd is used. Upstart script (init_script) method is used for DSM without systemd support (DSM 6).
+
+read -r -d '' init_script <<EOF
+start on syno.pkgctl.started WireGuard
+
+script
+	exec /usr/local/bin/wg-quick up %i
+end script
+
+EOF
+
+enable() {
+    if command -v systemctl &> /dev/null; then
+        systemctl is-enabled --quiet "pkg-wg-quick@${1}" &> /dev/null
+        if [ "$?" -ne 0 ]; then
+            systemctl enable "pkg-wg-quick@${1}" &> /dev/null
+            return 0
+        else
+            return 1
+        fi
+    else
+        if [ ! -f "/etc/init/wireguard-${1}.conf" ]; then
+            echo -e "$init_script" > "/etc/init/wireguard-${1}.conf"
+            sed -i "s/%i/${1}/g" "/etc/init/wireguard-${1}.conf"
+            return 0
+        else
+            return 1
+        fi
+    fi
+}
+
+disable() {
+    if command -v systemctl &> /dev/null; then
+        systemctl is-enabled --quiet "pkg-wg-quick@${1}" &> /dev/null
+        if [ "$?" -eq 0 ]; then
+            systemctl disable "pkg-wg-quick@${1}" &> /dev/null
+            return 0
+        else
+            return 1
+        fi
+    else
+        if [ -f "/etc/init/wireguard-${1}.conf" ]; then
+            rm -rf "/etc/init/wireguard-${1}.conf"
+            return 0
+        else
+            return 1
+        fi
+    fi
+}
+
+if [ "$EUID" -ne 0 ]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+case "$1" in
+    enable)
+        enable "$2"
+        if [ "$?" -eq 0 ]; then
+            echo "wg-autostart $2 has been enabled successfully"
+            exit 0
+        else
+            echo "wg-autostart $2 is already enabled" 1>&2
+            exit 1
+        fi
+    ;;
+    disable)
+        disable "$2"
+        if [ "$?" -eq 0 ]; then
+            echo "wg-autostart $2 has been disabled successfully"
+            exit 0
+        else
+            echo "wg-autostart $2 is already disabled" 1>&2
+            exit 1
+        fi
+    ;;
+    *)
+        echo "Usage: $0 {enable|disable} [interface]" 1>&2
+        exit 1
+esac

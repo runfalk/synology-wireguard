@@ -1,0 +1,12 @@
+--- peerlookup.c	2021-01-19 01:34:52.624027083 +0100
++++ peerlookup.c	2021-01-19 01:40:12.063429383 +0100
+@@ -7,6 +7,9 @@
+ #include "peer.h"
+ #include "noise.h"
+ 
++#define spin_lock_bh(lock) __raw_spin_lock_bh(&(lock)->rlock)
++#define spin_unlock_bh(lock)   __raw_spin_unlock_bh(&(lock)->rlock)
++
+ static struct hlist_head *pubkey_bucket(struct pubkey_hashtable *table,
+ 					const u8 pubkey[NOISE_PUBLIC_KEY_LEN])
+ {
