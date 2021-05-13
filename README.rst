@@ -52,6 +52,7 @@ DS1511+   x64        6.2         Yes
 DS1618+   denverton  6.2         Yes
 DS1817+   avoton     6.2         Yes
 DS1815+   avoton     6.2         Yes
+DS1819+   denverton  6.2         Yes (starting with WireGuard-1.0.20210424)
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS214play armada370  *N/A*       No (Kernel version too old)
@@ -156,8 +157,8 @@ command in this repository:
 Now we can build for any platform and DSM version using:
 
 .. code-block:: bash
-
-    sudo docker run --rm --privileged --env PACKAGE_ARCH=<arch> --env DSM_VER=<dsm-ver> -v $(pwd)/artifacts:/result_spk synobuild
+    mkdir toolkit_tarballs artifacts
+    sudo docker run --rm --privileged --env PACKAGE_ARCH=<arch> --env DSM_VER=<dsm-ver> -v $(pwd)/artifacts:/result_spk -v $(pwd)/toolkit_tarballs:/toolkit_tarballs synobuild
 
 You should replace ``<arch>`` with your NAS's package arch. Using
 `this table <https://www.synology.com/en-global/knowledgebase/DSM/tutorial/General/What_kind_of_CPU_does_my_NAS_have>`_
@@ -169,7 +170,8 @@ For the DS218j that I have, the complete command looks like this:
 
 .. code-block:: bash
 
-    sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk synobuild
+    mkdir toolkit_tarballs artifacts
+    sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk -v $(pwd)/toolkit_tarballs:/toolkit_tarballs synobuild
 
 If everything worked you should have a directory called ``artifacts`` that
 contains your SPK files.
@@ -188,6 +190,34 @@ them instead of pulling them from SourceForge when possible. You can also
 download the files directly and put them in the folder you created by downloading
 them from here: https://sourceforge.net/projects/dsgpl/files/toolkit/DSM<DSM_VER>
 (e.g. https://sourceforge.net/projects/dsgpl/files/toolkit/DSM6.2)
+
+
+Testing the installation
+------------------------
+After installing the package in your DSM, its time to test it.
+First, take a look here https://git.zx2c4.com/wireguard-tools and see which is the current version of wireguard.
+At the moment of writing this, its `1.0.20210424`
+Then download the wireguard tools and extract it
+
+
+.. code-block:: bash
+
+    wget https://git.zx2c4.com/wireguard-tools/snapshot/wireguard-tools-1.0.20210424.tar.xz
+    tar -xf wireguard-tools-1.0.20210424.tar.xz
+    cd wireguard-tools-1.0.20210424/contrib/ncat-client-server/
+    # now we'll be connecting to a demo wireguard server
+    ./client.sh default-route
+    # now we'll check which IP the outside world sees:
+    curl zx2c4.com/ip
+    # the website should display
+    # 163.172.161.0
+    # demo.wireguard.com
+    # curl/7.49.1
+    curl http://checkip.amazonaws.com/
+    # the website should display
+    # 163.172.161.0
+    # now we shut down the interface to restore normal routing
+    wg-quick down wg0
 
 
 Credits
