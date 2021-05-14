@@ -52,7 +52,7 @@ DS1511+   x64        6.2         Yes
 DS1618+   denverton  6.2         Yes
 DS1817+   avoton     6.2         Yes
 DS1815+   avoton     6.2         Yes
-DS1819+   denverton  6.2         Yes (starting with WireGuard-1.0.20210424)
+DS1819+   denverton  6.2         Yes
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS213j    armada370  *N/A*       No (Kernel version too old)
 DS214play armada370  *N/A*       No (Kernel version too old)
@@ -180,10 +180,10 @@ contains your SPK files.
 Avoiding timeouts when downloading build files
 ----------------------------------------------
 It can take a long time to pull development files from SourceForge, including
-occasional timeouts. To get around this, create a folder locally and map it to
-the `/toolkit_tarballs` Docker volume using the following command:
+occasional timeouts. To get around this, in the step "Compiling", we've created a folder 
+locally and mapped it to the `/toolkit_tarballs` Docker volume using the following parameter:
 `-v $(pwd)/<path/to/folder>:/toolkit_tarballs`
-to the `docker run` command listed above. This will allow the development files
+to the `docker run` command listed above. This allows the development files
 to be stored on your host machine instead of ephemerally in the container. The
 image will check for existing development files in that folder and will use
 them instead of pulling them from SourceForge when possible. You can also
@@ -191,13 +191,12 @@ download the files directly and put them in the folder you created by downloadin
 them from here: https://sourceforge.net/projects/dsgpl/files/toolkit/DSM<DSM_VER>
 (e.g. https://sourceforge.net/projects/dsgpl/files/toolkit/DSM6.2)
 
-
 Testing the installation
 ------------------------
 After installing the package in your DSM, its time to test it.
 First, take a look here https://git.zx2c4.com/wireguard-tools and see which is the current version of wireguard.
 At the moment of writing this, its `1.0.20210424`
-Then download the wireguard tools and extract it
+On your NAS: Download the wireguard tools, extract them and then run the Wireguard-Test script using these commands:
 
 
 .. code-block:: bash
@@ -212,7 +211,7 @@ Then download the wireguard tools and extract it
     # the website should display
     # 163.172.161.0
     # demo.wireguard.com
-    # curl/7.49.1
+    # curl/7.49.1 // you may get a different version here.
     curl http://checkip.amazonaws.com/
     # the website should display
     # 163.172.161.0
