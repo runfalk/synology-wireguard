@@ -1,0 +1,13 @@
+--- netlink.c	2021-01-09 19:18:42.109012366 +0100
++++ netlink.c	2021-01-09 16:08:05.098280000 +0100
+@@ -62,8 +62,8 @@
+ 				      nla_data(attrs[WGDEVICE_A_IFNAME]));
+ 	if (!dev)
+ 		return ERR_PTR(-ENODEV);
+-	if (!dev->rtnl_link_ops || !dev->rtnl_link_ops->kind ||
+-	    strcmp(dev->rtnl_link_ops->kind, KBUILD_MODNAME)) {
++	if (!dev->dev.type || !dev->dev.type->name ||
++	    strcmp(dev->dev.type->name, KBUILD_MODNAME)) {
+ 		dev_put(dev);
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 	}

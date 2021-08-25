@@ -1,7 +1,7 @@
 #!/bin/bash
-VER=7.0
+VERSIONS=(6.2 7.0)
 ARCHS=(
-    # "apollolake"
+    "apollolake"
     "armada38x"
     "avoton"
     "braswell"
@@ -14,7 +14,7 @@ ARCHS=(
     "kvmx64"
     "monaco"
     "rtd1296"
-    # "x64"
+    "x64"
 )
 
 set -e
@@ -25,49 +25,51 @@ if [ `id -u` -ne 0 ]; then
     exit 1
 fi
 
-# Create release directory if needed
-if [ ! -d target/ ]; then
-    mkdir target/
-fi
-
 # Download all necessary tarballs before calling into the docker containers.
 echo "Downloading environment tarballs"
-url_base="https://sourceforge.net/projects/dsgpl/files/toolkit/DSM$VER"
-pushd toolkit_tarballs/
-if [ ! -f base_env-$VER.txz ]; then
-    wget -q --show-progress "$url_base/base_env-$VER.txz"
-fi
-for arch in ${ARCHS[@]}; do
-    if [ ! -f ds.$arch-$VER.dev.txz ]; then
-        wget -q --show-progress "$url_base/ds.$arch-$VER.dev.txz"
+for ver in ${VERSIONS[@]}; do
+    url_base="https://sourceforge.net/projects/dsgpl/files/toolkit/DSM$ver"
+    pushd toolkit_tarballs/
+    if [ ! -f base_env-$ver.txz ]; then
+        wget -q --show-progress "$url_base/base_env-$ver.txz"
     fi
-    if [ ! -f ds.$arch-$VER.env.txz ]; then
-        wget -q --show-progress "$url_base/ds.$arch-$VER.env.txz"
-    fi
+    for arch in ${ARCHS[@]}; do
+        if [ ! -f ds.$arch-$ver.dev.txz ]; then
+            wget -q --show-progress "$url_base/ds.$arch-$ver.dev.txz"
+        fi
+        if [ ! -f ds.$arch-$ver.env.txz ]; then
+            wget -q --show-progress "$url_base/ds.$arch-$ver.env.txz"
+        fi
+    done
+    popd
 done
-popd
 
 # Ensure that we are using an up to date docker image
 docker build -t synobuild .
 
-for arch in ${ARCHS[@]}; do
-    echo "Building '$arch'"
+for ver in ${VERSIONS[@]}; do
+    # Create release directory if needed
+    mkdir -p target/$ver
 
-    # Remove old artifact directory
-    if [ -d artifacts/ ]; then
-        rm -rf artifacts/
-    fi
+    for arch in ${ARCHS[@]}; do
+        echo "Building '$arch'"
 
-    docker run \
-        --rm \
-        --privileged \
-        --env PACKAGE_ARCH=$arch \
-        --env DSM_VER=$VER \
-        -v $(pwd)/artifacts:/result_spk \
-        -v $(pwd)/toolkit_tarballs:/toolkit_tarballs \
-        synobuild
+        # Remove old artifact directory
+        if [ -d artifacts/ ]; then
+            rm -rf artifacts/
+        fi
 
-    mv artifacts/WireGuard-*/* target/
+        docker run \
+            --rm \
+            --privileged \
+            --env PACKAGE_ARCH=$arch \
+            --env DSM_VER=$ver \
+            -v $(pwd)/artifacts:/result_spk \
+            -v $(pwd)/toolkit_tarballs:/toolkit_tarballs \
+            synobuild
+
+        mv artifacts/WireGuard-*/* target/$ver/
+    done
 done
 
 # Clean up artifact directory

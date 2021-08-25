@@ -41,40 +41,41 @@ All models marked *Is working* have been confirmed by users to work. If your
 model has the same platform as one of the working ones, chances are it will
 work for you too.
 
-========= ========== =========== ===========================
-Model     Platform   DSM Version Is working?
---------- ---------- ----------- ---------------------------
-DS1019+   apollolake 6.2         Yes
-DS114     armada370  *N/A*       No (Kernel version too old)
-DS115j    armada370  *N/A*       No (Kernel version too old)
-DS116     armada38x  6.2         Yes
-DS1511+   x64        6.2         Yes
-DS1618+   denverton  6.2         Yes
-DS1817+   avoton     6.2         Yes
-DS1815+   avoton     6.2         Yes
-DS213j    armada370  *N/A*       No (Kernel version too old)
-DS213j    armada370  *N/A*       No (Kernel version too old)
-DS214play armada370  *N/A*       No (Kernel version too old)
-DS214se   armada370  *N/A*       No (Kernel version too old)
-DS216+II  braswell   6.2         Yes
-DS216se   armada370  *N/A*       No (Kernel version too old)
-DS216Play monaco     6.2         Yes
-DS218     rtd1296    6.2         Yes
-DS218+    apollolake 6.2         Yes
-DS218j    armada38x  6.2         Yes
-DS220+    geminilake 6.2         Yes
-DS3617xs  broadwell  6.2         Yes
-DS414slim armada370  *N/A*       No (Kernel version too old)
-DS415+    avoton     6.2         Yes
-DS418play apollolake 6.2         Yes
-DS713+    cedarview  6.2         Yes
-DS716+II  braswell   6.2         Yes
-DS718+    apollolake 6.2         Yes
-DS916+    braswell   6.2         Yes
-DS918+    apollolake 6.2         Yes
-RS214     armada370  *N/A*       No (Kernel version too old)
-RS816     armada38x  6.2         Yes
-========= ========== =========== ===========================
+=========== ========== =========== ===========================
+Model       Platform   DSM Version Is working?
+----------- ---------- ----------- ---------------------------
+DS1019+     apollolake 6.2         Yes
+DS114       armada370  *N/A*       No (Kernel version too old)
+DS115j      armada370  *N/A*       No (Kernel version too old)
+DS116       armada38x  6.2         Yes
+DS1511+     x64        6.2         Yes
+DS1618+     denverton  6.2         Yes
+DS1817+     avoton     6.2         Yes
+DS1815+     avoton     6.2         Yes
+DS213j      armada370  *N/A*       No (Kernel version too old)
+DS213j      armada370  *N/A*       No (Kernel version too old)
+DS214play   armada370  *N/A*       No (Kernel version too old)
+DS214se     armada370  *N/A*       No (Kernel version too old)
+DS216+II    braswell   6.2         Yes
+DS216se     armada370  *N/A*       No (Kernel version too old)
+DS216Play   monaco     6.2         Yes
+DS218       rtd1296    6.2         Yes
+DS218+      apollolake 6.2         Yes
+DS218j      armada38x  6.2         Yes
+DS220+      geminilake 6.2/7.0     Yes
+DS3617xs    broadwell  6.2         Yes
+DS414slim   armada370  *N/A*       No (Kernel version too old)
+DS415+      avoton     6.2         Yes
+DS418play   apollolake 6.2         Yes
+DS713+      cedarview  6.2         Yes
+DS716+II    braswell   6.2         Yes
+DS718+      apollolake 6.2         Yes
+DS916+      braswell   6.2         Yes
+DS918+      apollolake 6.2         Yes
+RS214       armada370  *N/A*       No (Kernel version too old)
+RS816       armada38x  6.2         Yes
+Virtual DSM kvmx64     6.2/7.0     Yes
+=========== ========== =========== ===========================
 
 The minimum required kernel version is 3.10. If you have a kernel version lower
 than that, WireGuard will not work. You can check your kernel version by
@@ -92,37 +93,27 @@ HP54NL    DS3615xs         bromolow   6.2         Yes
 
 Installation
 ------------
-Check the `releases <https://github.com/runfalk/synology-wireguard/releases>`_
-page for SPKs for your platform. If there is no SPK you have to compile it
-yourself using the instructions below.
+1. Check the `releases <https://github.com/runfalk/synology-wireguard/releases>`_
+   page for SPKs for your platform and DSM version. If there is no SPK you have to compile it
+   yourself using the instruction below.
 
-1. In the Synology DSM web admin UI, open the Package Center and press the
-   *Settings* button.
-2. Set the trust level to *Any publisher* and press *OK* to confirm.
-3. Press the *Manual install* button and provide the SPK file. Follow the
-   instructions until done.
+2. (*Not applicable for DSM from 7.0*)
+   In the Synology DSM web admin UI, open the Package Center and press the Settings button.
+   Set the trust level to Any publisher and press OK to confirm.
+
+3. In the Package Center, press the *Manual install* button and provide the SPK file. Follow the instructions until done.
+
+4. (*Only for DSM from 7.0*)
+   From DSM 7.0, an additional step is required for the WireGuard package to start.
+   This is related to `preventing  packages not signed by Synology from running with root privileges <https://www.synology.com/en-us/knowledgebase/DSM/tutorial/Third_Party/supported_third_party_packages_beta>`_.
+   When installing the package, uncheck the ``run after installation`` option. After installing the package, `connect to the NAS via SSH <https://www.synology.com/en-us/knowledgebase/DSMUC/help/DSMUC/AdminCenter/system_terminal>`_ and run the ``sudo /var/packages/WireGuard/scripts/start`` command.
+
 
 Now you just need to figure out how to configure WireGuard. There are lots of
 good guides on how to do that.
 
 To put my WireGuard configuration on the NAS, I used SSH and created a
-``wg-quick`` configuration in ``/etc/wireguard/wg0.conf``.  Then I opened the
-*Control panel*, opened the *Task scheduler* and created *Triggered task* that
-runs ``wg-quick up wg0`` on startup.
-
-When running ``iptables`` in the ``PostUp`` and ``PostDown`` rules I needed to
-toggle the interface to make it work. My full startup task looks like this:
-
-.. code-block:: bash
-
-    sleep 60
-    wg-quick up wg0
-    sleep 5
-    wg-quick down wg0
-    sleep 5
-    wg-quick up wg0
-
-My ``/etc/wireguard/wg0.conf`` looks like this:
+``wg-quick`` configuration in ``/etc/wireguard/wg0.conf``. My configuration looks like this:
 
 .. code-block::
 
@@ -140,6 +131,27 @@ My ``/etc/wireguard/wg0.conf`` looks like this:
 Note that you need to modify the rules if your network interface is not
 ``eth0``. You can check which name your interface has by running ``ip a`` in an
 SSH session.
+
+
+Adding WireGuard to autostart
+-----------------------------
+DSM since version 7.0 comes with `systemd unit <https://www.freedesktop.org/software/systemd/man/systemd.unit.html>`_ support, while for previous versions you can use the built-in `upstart <http://upstart.ubuntu.com/>`_.
+To standardize the process of adding the WireGuard interface to the autostart, a simple ``wg-autostart`` script has been developed.
+
+**Important note:** before adding the interface to the autostart, start it manually by ``sudo wg-quick up wg0`` ensure that it does not cause the system to crash and that you can still access your NAS properly. Otherwise, you may not be able to start the NAS or you may not be able to access the device after a reboot.
+
+To add the ``wg0`` interface to the autostart, run the command:
+
+.. code-block::
+
+    sudo wg-autostart enable wg0
+
+
+To remove the ``wg0`` interface from the autostart, run the command:
+
+.. code-block::
+
+    sudo wg-autostart disable wg0
 
 
 Compiling
@@ -177,7 +189,7 @@ contains your SPK files.
 
 
 Avoiding timeouts when downloading build files
-----------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 It can take a long time to pull development files from SourceForge, including
 occasional timeouts. To get around this, create a folder locally and map it to
 the `/toolkit_tarballs` Docker volume using the following command:

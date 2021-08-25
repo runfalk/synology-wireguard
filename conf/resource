@@ -1,0 +1,5 @@
+{
+    "usr-local-linker": {
+        "bin": ["wireguard/wg", "wireguard/wg-quick", "wireguard/wg-autostart"]
+    }
+}
