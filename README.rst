@@ -41,10 +41,6 @@ All models marked *Is working* have been confirmed by users to work. If your
 model has the same platform as one of the working ones, chances are it will
 work for you too.
 
-
-DSM 6
-~~~~~
-
 =========== ========== =========== ===========================
 Model       Platform   DSM Version Is working?
 ----------- ---------- ----------- ---------------------------
@@ -66,6 +62,7 @@ DS216Play   monaco     6.2         Yes
 DS218       rtd1296    6.2         Yes
 DS218+      apollolake 6.2         Yes
 DS218j      armada38x  6.2         Yes
+DS220+      geminilake 6.2/7.0     Yes
 DS3617xs    broadwell  6.2         Yes
 DS414slim   armada370  *N/A*       No (Kernel version too old)
 DS415+      avoton     6.2         Yes
@@ -77,18 +74,7 @@ DS916+      braswell   6.2         Yes
 DS918+      apollolake 6.2         Yes
 RS214       armada370  *N/A*       No (Kernel version too old)
 RS816       armada38x  6.2         Yes
-Virtual DSM kvmx64     6.2         Yes
-=========== ========== =========== ===========================
-
-
-DSM 7
-~~~~~
-
-=========== ========== =========== ===========================
-Model       Platform   DSM Version Is working?
------------ ---------- ----------- ---------------------------
-DS220+      geminilake 7.0 Beta    Yes
-Virtual DSM kvmx64     7.0 Beta    Yes
+Virtual DSM kvmx64     6.2/7.0     Yes
 =========== ========== =========== ===========================
 
 The minimum required kernel version is 3.10. If you have a kernel version lower
