@@ -50,7 +50,7 @@ DS115j      armada370  *N/A*       No (Kernel version too old)
 DS116       armada38x  6.2         Yes
 DS1511+     x64        6.2         Yes
 DS1618+     denverton  6.2         Yes
-DS1817+     avoton     6.2         Yes
+DS1817+     avoton     6.2/7.0     Yes
 DS1815+     avoton     6.2         Yes
 DS213j      armada370  *N/A*       No (Kernel version too old)
 DS213j      armada370  *N/A*       No (Kernel version too old)
@@ -69,7 +69,6 @@ DS415+      avoton     6.2         Yes
 DS418play   apollolake 6.2         Yes
 DS713+      cedarview  6.2         Yes
 DS716+II    braswell   6.2         Yes
-DS718+      apollolake 6.2         Yes
 DS916+      braswell   6.2         Yes
 DS918+      apollolake 6.2         Yes
 RS214       armada370  *N/A*       No (Kernel version too old)
