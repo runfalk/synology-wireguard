@@ -70,6 +70,7 @@ DS418play   apollolake 6.2         Yes
 DS713+      cedarview  6.2         Yes
 DS716+II    braswell   6.2         Yes
 DS718+      apollolake 6.2         Yes
+DS720+      geminilake 7.0         Yes
 DS916+      braswell   6.2         Yes
 DS918+      apollolake 6.2         Yes
 RS214       armada370  *N/A*       No (Kernel version too old)
