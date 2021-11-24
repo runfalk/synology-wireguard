@@ -73,6 +73,7 @@ DS718+      apollolake 6.2         Yes
 DS720+      geminilake 7.0         Yes
 DS916+      braswell   6.2         Yes
 DS918+      apollolake 6.2         Yes
+RS1221+     v1000      7.0         Yes
 RS214       armada370  *N/A*       No (Kernel version too old)
 RS816       armada38x  6.2         Yes
 Virtual DSM kvmx64     6.2/7.0     Yes
