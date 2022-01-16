@@ -87,6 +87,11 @@ if [ ! -d "$build_env" ]; then
     # Ensure the installed toolchain has support for CA signed certificates.
     # Without this wget on https:// will fail
     cp /etc/ssl/certs/ca-certificates.crt "$build_env/etc/ssl/certs/"
+    
+    # Add patched version of DST Root CA X3 certificate
+    wget -O DSTRootCAX3_Extended.crt "https://crt.sh/?d=8395"
+    sed -i "s/xMDkzMDE0MDExNVow/0MDkzMDE4MTQwM1ow/g" DSTRootCAX3_Extended.crt
+    cat DSTRootCAX3_Extended.crt >> "$build_env/etc/ssl/certs/ca-certificates.crt"
 fi
 
 # Patch WireGuard to use its own included memneq implementation if architecture
