@@ -16,6 +16,7 @@ recover the data, this might not be for you.
 
 FAQ/Known issues
 ----------------
+* The releases in the releases page are for DSM 6 only. For DSM7, you'll need to follow the instructions in this readme and compile it yourself.
 * The ``Dns = x.x.x.x`` setting is unsupported. If you try it you will get the
   following message:
   ``/usr/local/bin/wg-quick: line 31: resolvconf: command not found``
@@ -40,6 +41,7 @@ Compatibility list
 All models marked *Is working* have been confirmed by users to work. If your
 model has the same platform as one of the working ones, chances are it will
 work for you too.
+**Note**: the releases in the releases page are for DSM 6 only. For DSM7, you'll need to follow the instructions in this readme and compile it yourself.
 
 =========== ========== =========== ===========================
 Model       Platform   DSM Version Is working?
