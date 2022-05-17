@@ -89,7 +89,7 @@ if [ ! -d "$build_env" ]; then
     cp /etc/ssl/certs/ca-certificates.crt "$build_env/etc/ssl/certs/"
     
     # Add patched version of DST Root CA X3 certificate
-    wget -O DSTRootCAX3_Extended.crt "https://crt.sh/?d=8395"
+    wget -O DSTRootCAX3_Extended.crt "https://crt.sh/?d=8395" --no-check-certificate
     sed -i "s/xMDkzMDE0MDExNVow/0MDkzMDE4MTQwM1ow/g" DSTRootCAX3_Extended.crt
     cat DSTRootCAX3_Extended.crt >> "$build_env/etc/ssl/certs/ca-certificates.crt"
 fi
@@ -113,6 +113,8 @@ fi
 
 # Disable quit if errors to allow printing of logfiles
 set +e
+
+mount -o bind /dev $build_env/dev
 
 # Build packages
 #   -p              package arch
