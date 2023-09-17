@@ -75,6 +75,7 @@ DS718+      apollolake 6.2         Yes
 DS720+      geminilake 7.0         Yes
 DS916+      braswell   6.2         Yes
 DS918+      apollolake 6.2         Yes
+DS920+      geminilake 7.2         Yes
 RS214       armada370  *N/A*       No (Kernel version too old)
 RS816       armada38x  6.2         Yes
 Virtual DSM kvmx64     6.2/7.0     Yes
@@ -98,13 +99,13 @@ Installation
 ------------
 1. Check the `releases <https://github.com/runfalk/synology-wireguard/releases>`_
    page for SPKs for your platform and DSM version. If there is no SPK you have to compile it
-   yourself using the instruction below.
+   yourself using the instruction below. There are also places with `precompiled files <https://www.blackvoid.club/wireguard-spk-for-your-synology-nas/>`
 
 2. (*Not applicable for DSM from 7.0*)
    In the Synology DSM web admin UI, open the Package Center and press the Settings button.
    Set the trust level to Any publisher and press OK to confirm.
 
-3. In the Package Center, press the *Manual install* button and provide the SPK file. Follow the instructions until done.
+3. In the Package Center, press the *Manual install* button and provide the SPK file. Follow the instructions until done. If you got *invalid file format* when upgrading from 6.x to 7.x, please uninstall the previous version first.
 
 4. (*Only for DSM from 7.0*)
    From DSM 7.0, an additional step is required for the WireGuard package to start.
