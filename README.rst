@@ -88,7 +88,7 @@ DS713+      cedarview  6.2         Yes
 DS716+II    braswell   6.2         Yes
 DS718+      apollolake 6.2         Yes
 DS720+      geminilake 7.0         Yes
-DS916+      braswell   6.2         Yes
+DS916+      braswell   6.2/7.0     Yes
 DS918+      apollolake 6.2         Yes
 RS214       armada370  *N/A*       No (Kernel version too old)
 RS816       armada38x  6.2         Yes
@@ -200,6 +200,7 @@ For the DS218j that I have, the complete command looks like this:
 
 .. code-block:: bash
 
+    mkdir $(pwd)/artifacts
     sudo docker run --rm --privileged --env PACKAGE_ARCH=armada38x --env DSM_VER=6.2 -v $(pwd)/artifacts:/result_spk synobuild
 
 If everything worked you should have a directory called ``artifacts`` that
