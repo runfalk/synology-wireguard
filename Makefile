@@ -49,6 +49,7 @@ $(WIREGUARD_DIR)/src/Makefile: $(WIREGUARD_TAR)
 	tar -xf $(WIREGUARD_TAR)
 	patch $(WIREGUARD_DIR)/src/netlink.c $(ROOT_DIR)/patch/netlink.patch
 	patch $(WIREGUARD_DIR)/src/peerlookup.c $(ROOT_DIR)/patch/peerlookup.patch
+	patch $(WIREGUARD_DIR)/src/compat/siphash/siphash.c $(ROOT_DIR)/patch/siphash.patch
 ifeq ($(APPLY_MEMNEQ_PATCH), 1)
 	patch $(WIREGUARD_DIR)/src/compat/Kbuild.include $(ROOT_DIR)/patch/memneq.patch
 endif
