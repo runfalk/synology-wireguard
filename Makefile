@@ -47,6 +47,7 @@ $(WIREGUARD_TOOLS_TAR):
 # and patch the spinlock implementation.
 $(WIREGUARD_DIR)/src/Makefile: $(WIREGUARD_TAR)
 	tar -xf $(WIREGUARD_TAR)
+	patch $(WIREGUARD_DIR)/src/compat/compat.h $(ROOT_DIR)/patch/compat.patch
 	patch $(WIREGUARD_DIR)/src/netlink.c $(ROOT_DIR)/patch/netlink.patch
 	patch $(WIREGUARD_DIR)/src/peerlookup.c $(ROOT_DIR)/patch/peerlookup.patch
 ifeq ($(APPLY_MEMNEQ_PATCH), 1)

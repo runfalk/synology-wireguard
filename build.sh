@@ -34,9 +34,9 @@ echo
 # Fetch Synology toolchain
 if [[ ! -d /pkgscripts-ng ]] || [ -z "$(ls -A /pkgscripts-ng)" ]; then
     clone_args=""
-    # If the DSM version is 7.0, use the DSM7.0 branch of pkgscripts-ng
+    # If the DSM version is 7.x, use the appropriate DSM7.x branch of pkgscripts-ng
     if [[ "$DSM_VER" =~ ^7\.[0-9]+$ ]]; then
-        clone_args="-b DSM7.0"
+        clone_args="-b DSM${DSM_VER}"
         export PRODUCT="DSM"
     fi
     git clone ${clone_args} https://github.com/SynologyOpenSource/pkgscripts-ng
