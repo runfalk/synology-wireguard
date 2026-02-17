@@ -9,4 +9,6 @@ RUN apt-get update \
 
 COPY . /source/WireGuard
 
+RUN chmod -R 777 /source/WireGuard
+
 ENTRYPOINT exec /source/WireGuard/build.sh
