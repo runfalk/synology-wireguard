@@ -1,0 +1,13 @@
+--- src/compat/compat.h	2022-06-27 12:54:37.000000000 +0200
++++ src/compat/compat.h	2024-03-31 01:44:27.000000000 +0100
+@@ -37,10 +37,6 @@
+ #error "WireGuard requires Linux >= 3.10"
+ #endif
+ 
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 6, 0)
+-#error "WireGuard has been merged into Linux >= 5.6 and therefore this compatibility module is no longer required."
+-#endif
+-
+ #if defined(ISRHEL7)
+ #include <linux/skbuff.h>
+ #define headers_end headers_start
