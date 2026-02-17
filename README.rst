@@ -1,3 +1,18 @@
+This project is unmaintained
+============================
+This project hasn't been updated since 2022, and even then the latest release
+didn't even use the latest WireGuard release at the time. As I no longer own
+a Synology device, nor have the ambition or bandwidth to fix this project, the
+responsible thing is to archive the project. There are a number of
+`forks available <https://github.com/runfalk/synology-wireguard/forks>`_.
+
+I haven't vetted any of them, but they should be a way better starting point
+than this repository at this point. From a quick look
+`vegardit's fork <https://github.com/runfalk/synology-wireguard/forks>`_ looks
+like the most well maintained one.
+
+Original README below.
+
 WireGuard support for Synology NAS
 ==================================
 This package adds WireGuard support for Synology NAS drives. It provides the
